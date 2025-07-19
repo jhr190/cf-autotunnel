@@ -1,0 +1,20 @@
+name: 自动运行 Cloudflare Tunnel
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+
+jobs:
+  tunnel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 下载 cloudflared
+        run: |
+          wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
+          chmod +x cloudflared-linux-amd64
+          sudo mv cloudflared-linux-amd64 /usr/local/bin/cloudflared
+
+      - name: 运行 Tunnel
+        run: cloudflared tunnel run --token eyJhIjoiMWUxNTNkZTBhNTYxMTcwYWJhYjNmYjM1NGNiYWU3NDMiLCJ0IjoiZGEwM2EzOGItYjJkZS00NTQxLWE2NDUtZDIyZTc2Mjc3OGQ5IiwicyI6Ik1tVmtaVGN5TW1NdFptSXdZeTAwT0RWbUxXSmhOV1V0WVdSbU1HWmlaRFkzTjJKaSJ9
